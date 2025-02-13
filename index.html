@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
+    <link rel="stylesheet" href="styles/_media.scss">
     <link rel="stylesheet" href="styles/styles.css">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -17,7 +19,7 @@
             <div class="left-header">
                 <div class="h-shape"></div>
                 <div class="image">
-                    <img src="img/hero.png" alt="">
+                    <img src="img/hero.jpg" alt="">
                 </div>
             </div>
             <div class="right-header">
@@ -466,22 +468,37 @@
                         </div>
                     </div>
                     <div class="right-contact">
-                        <form action="" class="contact-form">
+                        <form action="https://api.web3forms.com/submit" method="POST" class="contact-form" id="contactForm">
+                            <!-- Web3Forms Access Key -->
+                            <input type="hidden" name="access_key" value="d72a2d31-da1d-40fa-875a-190e57b492de">
+                            <!-- Notification Email -->
+                            <input type="hidden" name="reply_to" value="maqsoodanwar919@gmail.com">
+                            
                             <div class="input-control i-c-2">
-                                <input type="text" required placeholder="YOUR NAME">
-                                <input type="email" required placeholder="YOUR EMAIL">
+                                <input type="text" name="name" required placeholder="YOUR NAME">
+                                <input type="email" name="email" required placeholder="YOUR EMAIL">
                             </div>
                             <div class="input-control">
-                                <input type="text" required placeholder="ENTER SUBJECT">
+                                <input type="text" name="subject" required placeholder="ENTER SUBJECT">
                             </div>
                             <div class="input-control">
-                                <textarea name="" id="" cols="15" rows="8" placeholder="Message Here..."></textarea>
+                                <textarea name="message" cols="15" rows="8" required placeholder="Message Here..."></textarea>
                             </div>
-                            <div class="submit-btn">
+                            
+                            <div class="submit-btn submit_btn"> 
                                 <a href="./MAQSOODANWAR.pdf" target="_blank" class="main-btn">
                                     <span class="btn-text">Download CV</span>
                                     <span class="btn-icon"><i class="fas fa-download"></i></span>
                                 </a>
+                                <button type="submit" class="main-btn main_btn">
+                                    <span class="btn-text">Send</span> 
+                                    <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
+                                </button>
+                            </div>
+                            
+                            <!-- Success Message -->
+                            <div id="successMessage" style="display: none; color: green; margin-top: 10px;">
+                                Your message has been sent successfully!
                             </div>
                         </form>
                     </div>
@@ -508,5 +525,28 @@
         <i class="fas fa-adjust"></i>
     </div>
     <script src="app.js"></script>
+
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+    
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      document.getElementById('successMessage').style.display = 'block';
+                      form.reset();
+                  } else {
+                      alert('Error: ' + data.message);
+                  }
+              })
+              .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html>
